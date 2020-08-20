@@ -13,7 +13,7 @@ class BaseModel {
         }
     }
 }
-class SusscessModel extends BaseModel {
+class SuccessModel extends BaseModel {
     constructor(data, message) {
         super(data, message)
         this.errno = 0
@@ -25,4 +25,4 @@ class ErrorModel extends BaseModel {
         this.errno = -1
     }
 }
-module.exports = { SusscessModel, ErrorModel }
+module.exports = { SuccessModel, ErrorModel }
