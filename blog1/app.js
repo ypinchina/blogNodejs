@@ -40,15 +40,24 @@ let serverHandle = (req, res) => {
         req.body = postData
         
         //获取博客接口数据的路由
-        let blogData = blogRouter(req, res)
-        if(blogData) {
-            res.end(JSON.stringify(blogData))
+        let blogResult = blogRouter(req, res)//返回一个promise对象
+        if(blogResult) {
+            blogResult.then(blogData => {
+                if(blogData) {
+                    res.end(JSON.stringify(blogData))
+                }                
+            })
             return
         }
+
         //获取用户登录信息的路由
-        let userDatat = userRouter(req, res)
-        if(userDatat) {
-            res.end(JSON.stringify(userDatat))
+        let userData = userRouter(req, res)
+        if(userData) {
+            userData.then(data => {
+                if(data) {
+                    res.end(JSON.stringify(data))
+                }
+            })
             return
         }
         //如果未命中 404
