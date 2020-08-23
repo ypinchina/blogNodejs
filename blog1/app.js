@@ -35,6 +35,18 @@ let serverHandle = (req, res) => {
     req.query = querystring.parse(url.split('?')[1])
     res.setHeader('Content-type', 'application/json')
 
+    //获取cookies并解析
+    let cookieStr = req.headers.cookie || ''//k1=k1;v1=v1;v2=v2
+    req.cookieObj = {}
+    cookieStr.split(';').forEach(item => {
+        if(!item) {
+            return
+        }
+        let key = item.split('=')
+        req.cookieObj[key[0].trim()] = key[1].trim()
+        //trim()方法用于除去 cookie key-value的空格 保证唯一性
+    })
+
     postDateHandle(req).then((postData)=> {
         //处理postData
         req.body = postData
