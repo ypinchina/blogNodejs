@@ -17,11 +17,11 @@ if(env === 'dev')
     }
 } else if(env === 'production') {
     SQL_CONFIG = {
-        "host": "www.......com",//生产环境的数据库地址
+        "host": "localhost",//生产环境的数据库地址
         "user": "root",
         "password": "123456",
         "port": '3306',
         "database": "myblog"
     }
 }
-module.exports = SQL_CONFIG
+module.exports = { SQL_CONFIG, REDIS_CONFIG }

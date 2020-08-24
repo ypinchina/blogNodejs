@@ -1,6 +1,5 @@
 const mysql = require('mysql')
-const SQL_CONFIG = require('../conf/db')
-
+const { SQL_CONFIG } = require('../conf/db')
 const con = mysql.createConnection(SQL_CONFIG)
 //发送数据库配置
 

@@ -1,12 +1,13 @@
 let querystring = require('querystring')
 let blogRouter = require('./src/router/blog')
 let userRouter = require('./src/router/user')
+let { redisGet, redisSet } = require('./src/database/redis')
 const cookieExpires = () => {
     let time = new Date()
     time.setTime(time.getTime() + 24 * 60 * 60 * 1000)//一天后的毫秒数
     return time.toGMTString()
 }
-let SESSION_DATA = {}//暂存的session对象
+// let SESSION_DATA = {}//暂存的session对象
 
 const postDateHandle = (req) => {
     return new Promise((resolve, reject) => {
@@ -56,20 +57,26 @@ let serverHandle = (req, res) => {
     //解析session
     let needSetCookie = false //判断是否需要设置cookie
     let userId = req.cookieObj.userId
-    if(userId) {
-        if(!SESSION_DATA[userId]) {
-            SESSION_DATA[userId] = {}
-        }
-        console.log(SESSION_DATA[userId])
-    } else {
-        //没有userId 需要设置
+    if(!userId) {
+        //没有userId
         needSetCookie = true
         userId = `${Date.now()}_${Math.random()}`
-        SESSION_DATA[userId] = {}
-    }
-    req.session = SESSION_DATA[userId]
-    console.log(SESSION_DATA)
-    postDateHandle(req).then((postData)=> {
+        redisSet(userId, {})
+    }                              
+    req.sessionId = userId
+    // 获取session
+    redisGet(req.sessionId).then(res => {
+        if(!res) {//res为null
+        // redis中没有这个userId对于的session username
+          //保存到redis里 session为空
+          redisSet(req.sessionId, {})
+          req.session = {}
+        } else {
+          req.session = res
+        }
+        console.log(res)
+        return postDateHandle(req)
+    }).then((postData)=> {
         //处理postData
         req.body = postData
         
@@ -78,14 +85,14 @@ let serverHandle = (req, res) => {
         if(blogResult) {
             blogResult.then(blogData => {
                 if(needSetCookie) {
-                    res.setHeader('Set-Cookie', `userId=${result.userId};path=/;httpOnly;expires=${cookieExpires()}`)
+                    res.setHeader('Set-Cookie', `userId=${blogData.userId};path=/;httpOnly;expires=${cookieExpires()}`)
                 }
                 if(blogData) {
                     res.end(JSON.stringify(blogData))
                 }                
             })
             return
-        }
+        }//如果没有返回 证明没有登录
 
         //获取用户登录信息的路由
         let userData = userRouter(req, res)

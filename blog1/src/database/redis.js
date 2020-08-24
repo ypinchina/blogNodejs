@@ -5,7 +5,7 @@ redisClient.on('error', err => {
     console.error(err)
 })
 
-cost redisGet = function(key) {
+const redisGet = function(key) {//获取redis的方法
     return new Promise((resolve, reject) => {
         redisClient.get(key,(err, val) => {
             if(err) {
@@ -24,8 +24,8 @@ cost redisGet = function(key) {
         })
     })
 }
-const redisSet = function(key, val) {
-    if(val === 'object') {
+const redisSet = function(key, val) {//设置redis的方法
+    if(typeof val === 'object') {
         val = JSON.stringify(val)
     }
     redisClient.set(key, val, redis.print)

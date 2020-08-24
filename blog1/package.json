@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env NODE_ENV=dev nodemon ./bin/www.js",
-    "prd": "cross-env NODE_ENV=production nodemon ./bin/www.js"
+    "prd": "cross-env NODE_ENV=production nodemon ./bin/www.js",
+    "dew": "webpack-dev-server --config ./webpack.dev.config.js"
   },
   "keywords": [],
   "author": "",
