@@ -1,6 +1,12 @@
 let querystring = require('querystring')
 let blogRouter = require('./src/router/blog')
 let userRouter = require('./src/router/user')
+const cookieExpires = () => {
+    let time = new Date()
+    time.setTime(time.getTime() + 24 * 60 * 60 * 1000)//一天后的毫秒数
+    return time.toGMTString()
+}
+let SESSION_DATA = {}//暂存的session对象
 
 const postDateHandle = (req) => {
     return new Promise((resolve, reject) => {
@@ -47,6 +53,22 @@ let serverHandle = (req, res) => {
         //trim()方法用于除去 cookie key-value的空格 保证唯一性
     })
 
+    //解析session
+    let needSetCookie = false //判断是否需要设置cookie
+    let userId = req.cookieObj.userId
+    if(userId) {
+        if(!SESSION_DATA[userId]) {
+            SESSION_DATA[userId] = {}
+        }
+        console.log(SESSION_DATA[userId])
+    } else {
+        //没有userId 需要设置
+        needSetCookie = true
+        userId = `${Date.now()}_${Math.random()}`
+        SESSION_DATA[userId] = {}
+    }
+    req.session = SESSION_DATA[userId]
+    console.log(SESSION_DATA)
     postDateHandle(req).then((postData)=> {
         //处理postData
         req.body = postData
@@ -55,6 +77,9 @@ let serverHandle = (req, res) => {
         let blogResult = blogRouter(req, res)//返回一个promise对象
         if(blogResult) {
             blogResult.then(blogData => {
+                if(needSetCookie) {
+                    res.setHeader('Set-Cookie', `userId=${result.userId};path=/;httpOnly;expires=${cookieExpires()}`)
+                }
                 if(blogData) {
                     res.end(JSON.stringify(blogData))
                 }                
@@ -66,6 +91,9 @@ let serverHandle = (req, res) => {
         let userData = userRouter(req, res)
         if(userData) {
             userData.then(data => {
+                if(needSetCookie) {
+                    res.setHeader('Set-Cookie', `userId=${userId};path=/;httpOnly;expires=${cookieExpires()}`)
+                }
                 if(data) {
                     res.end(JSON.stringify(data))
                 }
