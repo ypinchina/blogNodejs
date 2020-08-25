@@ -6,7 +6,8 @@ h1{
     display: none;
 }
 #container{
-
+    border: 1px solid #666;
+    padding: 20px  40px;
 }
 #artical {
     border: 1px solid #666;
@@ -18,4 +19,22 @@ h1{
 }
 .artical .title {
     text-align: center;
+}
+h2{
+    text-align: center;
+}
+#bottom{
+    padding-bottom: 20px;
+    border-bottom: 1px dashed black
+}
+#newContent,#newTitle{
+    width: 300px;
+}
+#newContent{
+    height: 300px;
+    margin-top: 30px;
+}
+.newBox{
+    width: 300px;
+    margin: 30px auto;
 }
