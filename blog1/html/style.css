@@ -1,0 +1,21 @@
+body{background: linear-gradient(#aee2c1,#82bdFF,#aee2c1);}
+h1{
+    text-align: center;
+}
+#loginSuc {
+    display: none;
+}
+#container{
+
+}
+#artical {
+    border: 1px solid #666;
+    padding: 20px 50px;
+    margin-bottom: 20px;
+}
+.author{
+    display: inline-block;
+}
+.artical .title {
+    text-align: center;
+}

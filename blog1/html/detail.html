@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>blog list</title>
+    <link rel="stylesheet" href='./style.css'></link>
+</head>
+<body></body>
+    <h1>博客详情页</h1>
+    <div class='artical'>
+        <h2 class="title"></h2>
+        <div class="time">时间：<span id="time">2000/9/1</span></div>
+        <div class="author"><span>作者：</span><span id="author">佚名</span></div>
+        <div class="content"></div>
+    </div>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script>
+        let time = $("#time"),
+            author = $("#author"),
+            content = $(".content"),
+            title = $(".title")
+        
+        let search = location.search.split('?')[1]
+        if(!search) {
+            alert('解析错误')
+        } else {
+            let key = search.split('=')[0]
+            let val = search.split('=')[1]
+            if(key !== 'id') {
+                alert('解析错误')
+            } else {
+                $.ajax({
+                    method: 'GET',
+                    url: `http://localhost:8080/api/blog/detail?id=${val}`,
+                    success: function(result){
+                            let data = result.data[0]
+                            time.text(data.createtime)
+                            author.text(data.author)
+                            title.text(data.title)
+                            content.text(data.content)
+                        }
+                    })
+            }
+        }
+    </script>
+</body>
+</html>

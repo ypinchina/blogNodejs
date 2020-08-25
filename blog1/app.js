@@ -74,7 +74,6 @@ let serverHandle = (req, res) => {
         } else {
           req.session = res
         }
-        console.log(res)
         return postDateHandle(req)
     }).then((postData)=> {
         //处理postData
@@ -96,6 +95,7 @@ let serverHandle = (req, res) => {
 
         //获取用户登录信息的路由
         let userData = userRouter(req, res)
+        console.log(userData)
         if(userData) {
             userData.then(data => {
                 if(needSetCookie) {

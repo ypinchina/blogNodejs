@@ -3,8 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>blog list</title>
+    <link rel="stylesheet" href='./style.css'></link>
 </head>
 <body>
-    
+    <h1>我的博客</h1>
+    <div id='container'></div>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script>
+        // let host = 'http://localhost:8080'
+        let container = $('#container')
+        $.ajax({
+            method: 'GET',
+            url: `/api/blog/list`,
+            success: function(result){
+                    let data = result.data
+                    if(data.length) {
+                        data.forEach(item => {
+                            container.append(`<div id='artical'>
+                                <div><a href='./detail.html?id=id=${item.id}'>${item.title}</a></div>
+                                <div>${item.content}</div>
+                                <div>${item.createtime}</div>
+                                </div>`)
+                        })
+                    }
+                }
+        })
+    </script>
 </body>
 </html>
