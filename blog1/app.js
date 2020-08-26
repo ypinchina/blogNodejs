@@ -84,7 +84,7 @@ let serverHandle = (req, res) => {
         if(blogResult) {
             blogResult.then(blogData => {
                 if(needSetCookie) {
-                    res.setHeader('Set-Cookie', `userId=${blogData.userId};path=/;httpOnly;expires=${cookieExpires()}`)
+                    res.setHeader('Set-Cookie', `userId=${userId};path=/;httpOnly;expires=${cookieExpires()}`)
                 }
                 if(blogData) {
                     res.end(JSON.stringify(blogData))
@@ -95,7 +95,6 @@ let serverHandle = (req, res) => {
 
         //获取用户登录信息的路由
         let userData = userRouter(req, res)
-        console.log(userData)
         if(userData) {
             userData.then(data => {
                 if(needSetCookie) {
