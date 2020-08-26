@@ -1,4 +1,3 @@
-body{background: linear-gradient(#aee2c1,#82bdFF,#aee2c1);}
 h1{
     text-align: center;
 }
@@ -37,4 +36,37 @@ h2{
 .newBox{
     width: 300px;
     margin: 30px auto;
+}
+.head-top{
+    padding: 10px;
+    background-color: #acccc1;
+    margin-top:20px;
+}
+.blogTitle{
+    width: 50%;
+    display: inline-block;
+}
+.manifest {
+    width: 49%;
+    display: inline-block;
+}
+.articalTitle, .userDo {
+    display: inline-block;
+}
+.blogItem{
+    margin: 10px 0;
+    position: relative;
+    padding-bottom: 20px;
+    border-bottom: 1px dashed #ccc;
+}
+.userDo {
+    position: absolute;
+    right: 0;
+}
+.delete {
+    margin-left: 20px;
+}
+.delete:hover
+{
+  cursor: pointer;
 }

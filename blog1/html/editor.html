@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>blog list</title>
+    <link rel="stylesheet" href='./style.css'></link>
+</head>
+<body>
+    <div class="newBox">
+        <h1>编辑博客</h1>
+        <input type="text" id="newTitle"></br>
+        <textarea id="newContent"></textarea></br>
+        <button type="submit" id='newbtn'>更新</button>
+    </div>
+    
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script>
+        $(function() {
+            let titleVal
+            let areaTextVal
+            let search = location.search
+            let param = search.split('?')[1]
+            let key = param.split('=')[0]
+            if(key === 'id') {
+                $.ajax({
+                    type: 'get',
+                    url: `/api/blog/detail?id=${param.split('=')[1]}`,
+                    success: function(data) {
+                        if(!data.error) {
+                            data = data.data[0]
+                            titleVal = data.title
+                            $("#newTitle").val(titleVal)
+                            areaTextVal = data.content
+                            $("#newContent").val(areaTextVal)
+                        } else {
+                            alert('获取失败')
+                            return
+                        }
+                    }
+                })
+            } else {
+                alert('解析失败')
+                history.go(-1);
+            }
+            // 提交更改博客的方法
+            $('#newbtn').on('click', function() {
+                let editorTitle = $("#newTitle").val()
+                let editorArea = $("#newContent").val()
+                if(editorTitle === titleVal && editorArea === areaTextVal) {
+                    console.log('博客内容没有修改')
+                    return
+                } else {
+                    titleVal = editorTitle
+                    areaTextVal = editorArea
+                    let postData = {'title': editorTitle, 'content': editorArea}
+                    $.ajax({
+                        type: 'post',
+                        url: `/api/blog/update?id=${param.split('=')[1]}`,
+                        data: JSON.stringify(postData),
+                        contentType: "application/json",
+                        success: function(data) {
+                            if(data.errno === 0) {
+                                alert('更新博客成功')
+                                location.href = location.href
+                            } else {
+                                alert(data.message)
+                            }
+                        }
+                    })
+                }
+            })
+        })
+        // $("#newbtn").click(function() {
+        //     let titleVal = newTitle.value,
+        //         contentVal = newContent.value
+        //     if(titleVal && contentVal) {
+        //         let postData = {"title": titleVal, "content": contentVal}
+        //         $.ajax({
+        //             method: 'POST',
+        //             url: `/api/blog/new`,
+        //             data: JSON.stringify(postData),
+        //             contentType: "application/json",
+        //             success: function(result){
+        //               if(result.errno === -1) {
+        //                   //尚未登录
+        //                   alert(result.message)
+        //                   location.href = '/login.html'
+        //               } else{
+        //                 let data = result.data
+        //                 if(data.affectedRows) {
+        //                   alert('创建博客成功')
+        //                   window.location.href = `/detail.html?id=${data.insertId}`
+        //                 } else {
+        //                   alert('创建博客失败')
+        //                 }
+        //               }
+        //             }
+        //         })
+        //     } else {
+        //         alert('标题或者内容不能为空')
+        //     }
+        // })
+    </script>
+</body>
+</html>
