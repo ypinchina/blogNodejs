@@ -1,0 +1,35 @@
+本文介绍纯前端下载文件的方法。
+
+本文第一发布地址： http://www.cnblogs.com/ypinchina/p/8126102.html
+
+本人不喜欢多废话
+
+需求，对于很多浏览器，如果只知道下载对应url的情况下，使用a标签，点击下载文件，会直接打开该文件，而不是下载文件。于是H5多了一个该死的属性，'doload' 属性。该属性在 canIuse里查兼容性，居然连，IE11都不支持。因此，没啥意思，于是发帖求了个能用的方法，兼容所有现代浏览器。以及IE11
+
+以下是ES6的写法：
+
+直接贴代码。非ES6的情况，本人概不负责，对于坐吃等死耗日子的开发，我没啥好说的
+
+复制代码
+export function downloadFile(fileName, url) {
+if (isIE()) {
+ieDown(url)
+} else {
+const aLink = document.createElement('a')
+const evt = document.createEvent('MouseEvents')
+evt.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
+aLink.download = fileName
+aLink.href = url
+aLink.dispatchEvent(evt)
+}
+}
+
+const ieDown = url => {
+window.open(url)
+}
+
+const isIE = () => {
+const explorer = window.navigator.userAgent
+return explorer.indexOf('MSIE') >= 0 || explorer.indexOf('Trident/7.0') >= 0 || explorer.indexOf('Edge') >= 0
+}
+复制代码
