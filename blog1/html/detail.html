@@ -31,7 +31,7 @@
             } else {
                 $.ajax({
                     method: 'GET',
-                    url: `http://localhost:8080/api/blog/detail?id=${val}`,
+                    url: `/api/blog/detail?id=${val}`,
                     success: function(result){
                             let data = result.data[0]
                             time.text(data.createtime)

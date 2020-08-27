@@ -2,6 +2,8 @@ let querystring = require('querystring')
 let blogRouter = require('./src/router/blog')
 let userRouter = require('./src/router/user')
 let { redisGet, redisSet } = require('./src/database/redis')
+let access = require('./src/utils/log')
+
 const cookieExpires = () => {
     let time = new Date()
     time.setTime(time.getTime() + 24 * 60 * 60 * 1000)//一天后的毫秒数
@@ -35,6 +37,10 @@ const postDateHandle = (req) => {
 
 
 let serverHandle = (req, res) => {
+    
+    //记录日志
+    access(`${req.url} --- ${req.method} --- ${req.headers['user-agent']} --- ${Date.now()}`)
+
     //获取path
     let url = req.url
     req.path = url.split('?')[0]

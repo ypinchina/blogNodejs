@@ -61,7 +61,7 @@
                         success: function(data) {
                             if(data.errno === 0) {
                                 alert('更新博客成功')
-                                location.href = location.href
+                                location.href = `detail.html?id=${param.split('=')[1]}`
                             } else {
                                 alert(data.message)
                             }

@@ -17,4 +17,4 @@ function exec(sql) {//参数sql是sql语句
         })
     })
 }
-module.exports = exec
+module.exports = { exec, escape: mysql.escape }

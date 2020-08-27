@@ -36,7 +36,7 @@
                                 data.forEach(item => {
                                     let div = document.createElement('div')
                                     div.className = 'blogItem'
-                                    div.innerHTML = `<div class='articalTitle'>${item.title}<div class='userDo'><a class='editor' href='/editor.html?id=${item.id}'>编辑</a><a data-id=${item.id} onclick = "deleteFn(this)" class='delete'>删除</a></div></div>`
+                                    div.innerHTML = `<div class='articalTitle'><a href='/detail.html?id=${item.id}'>${item.title}</a><div class='userDo'><a class='editor' href='/editor.html?id=${item.id}'>编辑</a><a data-id=${item.id} onclick = "deleteFn(this)" class='delete'>删除</a></div></div>`
                                     frag.append(div)
                                 })
                                 $('.searchBox').html(frag)
@@ -87,7 +87,7 @@
                             data.forEach(item => {
                                 let div = document.createElement('div')
                                 div.className = 'blogItem'
-                                div.innerHTML = `<div class='articalTitle'>${item.title}<div class='userDo'><a class='editor' href='/editor.html?id=${item.id}'>编辑</a><a data-id=${item.id} onclick = "deleteFn(this)" class='delete'>删除</a></div></div>`
+                                div.innerHTML = `<div class='articalTitle'><a href='/detail.html?id=${item.id}'>${item.title}</a><div class='userDo'><a class='editor' href='/editor.html?id=${item.id}'>编辑</a><a data-id=${item.id} onclick = "deleteFn(this)" class='delete'>删除</a></div></div>`
                                 frag.append(div)
                             })
                             $('.searchBox').append(frag)
