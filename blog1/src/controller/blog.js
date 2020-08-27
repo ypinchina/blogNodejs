@@ -1,4 +1,5 @@
     const { exec, escape } = require('../database/db')
+    const xss = require('xss')
     const getList = (author, keyword) => {
         // 获取博客列表的方法
         let sql = `select * from blogs where 1=1 `
@@ -21,17 +22,17 @@
     const newBlog = (data = {}) => {
       // 表示新建一个博客 
       //data是一个博客对象，里面包含content和title 以及author作者
-      let title = escape(data.title)
-      let content = escape(data.content)
-      let author = escape(data.author)
+      let title = escape(xss(data.title))
+      let content = escape(xss(data.content))
+      let author = escape(xss(data.author))
       let sql = `insert into blogs (title, content, author, createtime) values 
       (${title}, ${content}, ${author}, ${Date.now()})
       `
       return exec(sql)
     }
     const updateBlog = (id, data = {}) => {
-      let title = escape(data.title)
-      let content = escape(data.content)
+      let title = escape(xss(data.title))
+      let content = escape(xss(data.content))
       id = escape(id)
       let sql = `
         update blogs set title = ${title}, content = ${content} where id = ${id};
