@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');//对应解析cookies的库
 var logger = require('morgan');//写日志
 var session = require('express-session')
+var redisStore = require('connect-redis')(session)
 
 // var indexRouter = require('./routes/index');
 // var usersRouter = require('./routes/users');
@@ -16,8 +17,27 @@ var app = express();
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'jade');
-
-app.use(logger('dev'));
+var redisClient = require('./db/redis')
+var sessionStore = new redisStore({
+  client: redisClient
+})
+// 写日志
+const _ENV = process.env.NODE_ENV
+const fs = require('fs')
+const fileName = path.join(__dirname, 'logs', 'access.log')
+const writeStream = fs.createWriteStream(fileName, {
+  flags: 'a'
+})
+if(_ENV === 'production') {
+  //生产环境 日志写入文件
+  app.use(logger('combined', {
+    stream: writeStream
+  }//默认项是直接输出在控制台
+  ));
+} else {
+  //开发环境 日志直接控制台输出
+  app.use(logger('dev'));
+}
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -27,7 +47,8 @@ app.use(session({
     path:'/',//默认配置
     httpOnly: true,//默认配置
     maxAge: 24 * 60 * 60 * 1000
-  }
+  },
+  store: sessionStore
 }))
 // app.use(express.static(path.join(__dirname, 'public')));//设置静态文件
 
