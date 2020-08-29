@@ -8,8 +8,7 @@
           sql += `and author = ${author} `
         }
         if(keyword) {
-          keyword = escape(author)
-          sql += `and title like %${keyword}% `
+          sql += `and title like '%${keyword}%' `
         }
         sql += `order by createtime desc`
         return exec(sql) //返回一个promise对象
