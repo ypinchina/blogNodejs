@@ -1,7 +1,7 @@
 const { exec, escape } = require('../db/mysql')
 const xss = require('xss')
 const genPassword = require('../utils/cryp')
-const async login = (username, password) => {
+const login = async (username, password) => {
     username = escape(xss(username))
     password = escape(genPassword(xss(password)))
     const sql = `select username, password from 

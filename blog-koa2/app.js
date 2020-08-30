@@ -7,6 +7,8 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const session = require('koa-generic-session')
 const redis = require('koa-redis')
+var morgan = require('koa-morgan')//写日志引入morgan模块
+
 
 // const index = require('./routes/index')
 // const users = require('./routes/users')
@@ -28,13 +30,33 @@ app.use(views(__dirname + '/views', {
   extension: 'pug'
 }))
 
-// logger
+// logger 控制台直接打印
 app.use(async (ctx, next) => {
   const start = new Date()
   await next()
   const ms = new Date() - start
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
+
+// 写日志
+const _ENV = process.env.NODE_ENV
+const path = require('path')
+const fs = require('fs')
+const fileName = path.join(__dirname, 'logs', 'access.log')
+const writeStream = fs.createWriteStream(fileName, {
+  flags: 'a'
+})
+if(_ENV === 'production') {
+  //生产环境 日志写入文件
+  app.use(morgan('combined', {
+    stream: writeStream
+  }//默认项是直接输出在控制台
+  ));
+} else {
+  //开发环境 日志直接控制台输出
+  app.use(morgan('dev'));
+}
+
 
 const { REDIS_CONFIG } = require('./conf/db')
 //session与redis配置

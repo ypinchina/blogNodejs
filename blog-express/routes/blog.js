@@ -20,7 +20,6 @@ router.get('/list', function(req, res, next) {
   return result.then(listData => {
     res.json(new SuccessModel(listData))
   })
-
 })
 //获取博客详情
 router.get('/detail', function(req, res, next) {

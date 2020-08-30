@@ -1,4 +1,4 @@
-const { exec, escape } = require('../database/db')
+const { exec, escape } = require('../db/mysql')
 const xss = require('xss')
 const genPassword = require('../utils/cryp')
 const login = (username, password) => {

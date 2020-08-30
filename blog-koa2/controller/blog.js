@@ -1,6 +1,6 @@
     const { exec, escape } = require('../db/mysql')
     const xss = require('xss')
-    const async getList = (author, keyword) => {
+    const getList = async (author, keyword) => {
         // 获取博客列表的方法
         let sql = `select * from blogs where 1=1 `
         if(author) {
@@ -13,12 +13,12 @@
         sql += `order by createtime desc`
         return await exec(sql) //返回一个promise对象
     }
-    const async getDetail = (id) => {
+    const getDetail = async (id) => {
       id = escape(id)
       let sql = `select * from blogs where id = ${id};`
       return await exec(sql)
     }
-    const async newBlog = (data = {}) => {
+    const newBlog = async (data = {}) => {
       // 表示新建一个博客 
       //data是一个博客对象，里面包含content和title 以及author作者
       let title = escape(xss(data.title))
@@ -29,7 +29,7 @@
       `
       return await exec(sql)
     }
-    const async updateBlog = (id, data = {}) => {
+    const updateBlog = async (id, data = {}) => {
       let title = escape(xss(data.title))
       let content = escape(xss(data.content))
       id = escape(id)
@@ -43,7 +43,7 @@
         return 0
       }
     }
-    const async deleteBlog = (id, author) => {
+    const deleteBlog = async (id, author) => {
       id = escape(id)
       author = escape(author)
       let sql = `delete from blogs where id = ${id} and author = ${author};`
