@@ -24,3 +24,12 @@ delete from users where username = 'lisi' //删除操作 一定要加where 不�
 软删除 设置一个表的 一个字段 state =1 默认数据有效
 state = 0是默认无效
 select * from users where state <> '0';    //<>是不等于的意思
+
+****  
+二. koa2重构blog
+
+核心:  asycn await 语法  
+1. await 后面可以追加 promise对象  
+2.  await 必须包裹在  async函数里面  （否则会报错）  
+3.  async 函数执行返回也是一个promise对象  
+4.  try-catch 截获promise中 reject的值  
