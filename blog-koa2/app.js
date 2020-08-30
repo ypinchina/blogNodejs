@@ -5,9 +5,13 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
+const session = require('koa-generic-session')
+const redis = require('koa-redis')
 
-const index = require('./routes/index')
-const users = require('./routes/users')
+// const index = require('./routes/index')
+// const users = require('./routes/users')
+const blog = require('./routes/blog')
+const user = require('./routes/user')
 
 // error handler
 onerror(app)
@@ -32,9 +36,25 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
 
+const { REDIS_CONFIG } = require('./conf/db')
+//session与redis配置
+app.keys = ['@_)a1q6SxT0']
+app.use(session({
+  cookie: {
+    path: '/',
+    httpOnly: 'true',
+    maxAge: 24 * 60 * 60 * 1000    
+  },
+  store: redis({
+    all: `${REDIS_CONFIG.host}: ${REDIS_CONFIG.port}`
+  })
+}))
+
 // routes
-app.use(index.routes(), index.allowedMethods())
-app.use(users.routes(), users.allowedMethods())
+// app.use(index.routes(), index.allowedMethods())
+// app.use(users.routes(), users.allowedMethods())
+app.use(blog.routes(), blog.allowedMethods())
+app.use(user.routes(), user.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {

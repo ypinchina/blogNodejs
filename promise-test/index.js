@@ -36,14 +36,27 @@ function getFileContent(fileName) {
     })
   })
 }
-getFileContent('a.json').then(res => {
-    console.log(res)
-    return getFileContent(res.next)
-}).then(res => {
-    console.log(res)
-    return getFileContent(res.next)
-}).then(res => {
-    console.log(res)
-}, err => {
-    console.log(err)
-})
+// getFileContent('a.json').then(res => {
+//     console.log(res)
+//     return getFileContent(res.next)
+// }).then(res => {
+//     console.log(res)
+//     return getFileContent(res.next)
+// }).then(res => {
+//     console.log(res)
+// }, err => {
+//     console.log(err)
+// })
+async function readFileDate(fileName) {
+    try {
+        const aData = await getFileContent(fileName)
+        console.log(aData)
+        const bData = await getFileContent(aData.next)
+        console.log(bData)
+        const cData = await getFileContent(bData.next)
+        console.log(cData)
+    } catch(err) {
+        console.error(err)
+    }
+}
+readFileDate('a.json')
