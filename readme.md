@@ -44,3 +44,15 @@ select * from users where state <> '0';    //<>是不等于的意思
 * 进程守护，系统崩溃自动重启
 * 启动多进程，充分利用内存和CPU
 * 自带日志记录功能
+
+****  
+pm2常用命令  
+  
+ pm2 start...  //开启服务  
+ pm2 list      //查看服务列表  
+ pm2 restart <AppName>/<id>  //重开服务  
+ pm2 stop <AppName>/<id> 
+ pm2 delete <AppName>/<id>   //停止与删除  
+ pm2 info <AppName>/<id> //查看基本信息
+ pm2 log <AppName>/<id>  //查看log是怎么打印的  
+ pm2 monit <AppName>/<id> //查看内存和CPU使用状况
